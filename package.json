@@ -8,7 +8,6 @@
   },
   "author": "João Victor Saloti Alves",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
     "express": "^4.19.2"
   },
