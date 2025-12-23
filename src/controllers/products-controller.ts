@@ -40,6 +40,35 @@ class ProductsController {
       next(error)
     }
   }
+
+  async update(request: Request, response: Response, next: NextFunction) {
+    try {
+      const id = z.string()
+        .transform((value) => Number(value))
+        .refine((value) => !isNaN(value), { message: "id must be a number" })
+        .parse(request.params.id)
+
+      const bodySchema = z.object({
+        name: z
+          .string({ required_error: "name is required!" })
+          .trim()
+          .min(6, "name must have at least 6 characters!"),
+        price: z
+          .number({ required_error: "price is required!" })
+          .gt(0, "price must be greater than zero!"),
+      })
+
+      const { name, price } = bodySchema.parse(request.body)
+
+      await knex<ProductRepository>("products")
+        .update({ name, price, updated_at: new Date() })
+        .where({ id })
+
+      return response.json()
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export { ProductsController }
