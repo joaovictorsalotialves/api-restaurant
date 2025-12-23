@@ -1,0 +1,10 @@
+{
+  "name": "api-restaurant",
+  "version": "1.0.0",
+  "description": "API para gerenciar pedidos das mesas de um restaurante.",
+  "main": "index.js",
+  "scripts": {},
+  "author": "João Victor Saloti Alves",
+  "license": "ISC",
+  "type": "module"
+}
