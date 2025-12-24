@@ -5,6 +5,7 @@ import { OrdersController } from "@/controllers/orders-controller"
 const ordersRoutes = Router()
 const ordersController = new OrdersController()
 
+ordersRoutes.get("/table-session/:id", ordersController.index)
 ordersRoutes.post("/", ordersController.create)
 
 export { ordersRoutes }
