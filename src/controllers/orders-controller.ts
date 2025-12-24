@@ -76,6 +76,25 @@ class OrdersController {
       next(error)
     }
   }
+
+  async show(request: Request, response: Response, next: NextFunction) {
+    try {
+      const table_session_id = z.string()
+        .transform((value) => Number(value))
+        .refine((value) => !isNaN(value), { message: "table_session_id must be a number" })
+        .parse(request.params.table_session_id)
+
+      const orders = await knex("orders")
+        .select(knex.raw("COALESCE(SUM(orders.price * orders.quantity), 0) AS total"))
+        .select(knex.raw("COALESCE(SUM(orders.quantity), 0) AS quantity"))
+        .where({ table_session_id })
+        .first()
+
+      return response.json(orders)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 export { OrdersController }
