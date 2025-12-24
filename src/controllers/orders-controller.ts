@@ -57,11 +57,19 @@ class OrdersController {
 
       const order = await knex("orders")
         .select(
-          "orders.id", "orders.table_session_id", 
-          "orders.product_id", "products.name", "orders.price", "orders.quantity"
+          "orders.id", 
+          "orders.table_session_id", 
+          "orders.product_id", 
+          "products.name", 
+          "orders.price", 
+          "orders.quantity",
+          knex.raw("(orders.price * orders.quantity) AS total"),
+          "orders.created_at",
+          "orders.updated_at",
         )
         .join("products", "products.id", "orders.product_id")
         .where({ table_session_id })
+        .orderBy("orders.created_at", "desc")
 
       return response.json(order)
     } catch (error) {
