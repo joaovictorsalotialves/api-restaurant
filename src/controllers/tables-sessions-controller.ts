@@ -5,6 +5,18 @@ import { AppError } from "@/utils/AppError"
 import { knex } from "@/database/knex"
 
 export class TablesSessionsController {
+  async index(request: Request, response: Response, next: NextFunction) {
+    try {
+      const sessions = await knex<TableSessionRepository>("tables_sessions")
+        .select()
+        .orderBy("closed_at")
+
+        return response.json(sessions)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async create(request: Request, response: Response, next: NextFunction) {
     try {
       const bodySchema = z.object({
